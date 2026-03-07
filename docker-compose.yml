@@ -1,0 +1,9 @@
+services:
+  frontend-user:
+    build:
+      context: ./frontend-user
+      dockerfile: Dockerfile
+    container_name: ride-hailing-frontend
+    ports:
+      - "8081:80"
+    restart: unless-stopped

@@ -1,0 +1,330 @@
+.vehicle-page {
+  min-height: 100vh;
+  background: var(--color-bg);
+  padding-bottom: 170px;
+}
+
+.vehicle-route-summary {
+  background: var(--color-card);
+  padding: 20px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.vrs-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.vrs-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.vrs-dot.origin { background: var(--color-primary); }
+.vrs-dot.dest { background: var(--color-error); }
+
+.vrs-text {
+  font-size: var(--font-md);
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.vrs-line {
+  flex: 1;
+  height: 2px;
+  background: repeating-linear-gradient(90deg, var(--color-border) 0, var(--color-border) 4px, transparent 4px, transparent 8px);
+  margin: 0 12px;
+}
+
+.vehicle-type-list {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.vt-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: var(--color-card);
+  border-radius: var(--radius-md);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: var(--shadow-sm);
+}
+
+.vt-card:hover { box-shadow: var(--shadow-md); }
+.vt-card.active {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+.vt-icon { font-size: 32px; flex-shrink: 0; }
+
+.vt-body { flex: 1; min-width: 0; }
+
+.vt-name {
+  font-size: var(--font-lg);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.vt-tags {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+
+.vt-tag {
+  font-size: 10px;
+  color: var(--color-text-secondary);
+  background: var(--color-bg);
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+}
+
+.vt-right { text-align: right; flex-shrink: 0; }
+
+.vt-price {
+  font-size: var(--font-xl);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.vt-eta {
+  font-size: var(--font-xs);
+  color: var(--color-text-secondary);
+  margin-top: 2px;
+}
+
+.vehicle-detail-toggle {
+  text-align: center;
+  padding: 12px;
+  color: var(--color-primary);
+  font-size: var(--font-sm);
+  cursor: pointer;
+}
+
+.vehicle-detail-panel {
+  margin: 0 16px;
+  background: var(--color-card);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.vd-section {
+  margin-bottom: 16px;
+}
+
+.vd-section:last-child { margin-bottom: 0; }
+
+.vd-section h4 {
+  font-size: var(--font-md);
+  color: var(--color-text);
+  margin-bottom: 8px;
+}
+
+.vd-section p {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.vd-features {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.vehicle-coupon-floating {
+  position: fixed;
+  bottom: 76px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 24px);
+  max-width: calc(var(--max-width) - 24px);
+  z-index: calc(var(--z-header) + 1);
+  display: flex;
+  align-items: center;
+  padding: 12px 14px;
+  background: var(--color-card);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-border);
+}
+
+.vcs-label {
+  font-size: var(--font-md);
+  color: var(--color-text);
+  flex: 1;
+}
+
+.vcs-value {
+  font-size: var(--font-sm);
+  color: var(--color-primary);
+  margin-right: 8px;
+}
+
+.vcs-more {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+}
+
+.coupon-picker-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.coupon-picker {
+  background: var(--color-card);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  width: 100%;
+  max-width: var(--max-width);
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.coupon-picker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.coupon-picker-header h3 {
+  font-size: var(--font-lg);
+  font-weight: 600;
+}
+
+.coupon-picker-header button {
+  font-size: 18px;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  padding: 4px;
+}
+
+.coupon-picker-list {
+  padding: 8px 0;
+}
+
+.coupon-picker-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.coupon-picker-item:hover { background: #fafafa; }
+.coupon-picker-item.active { background: var(--color-primary-light); }
+
+.cpi-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cpi-amount {
+  font-size: var(--font-lg);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.cpi-name {
+  font-size: var(--font-sm);
+  color: var(--color-text);
+}
+
+.cpi-condition {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+}
+
+.coupon-picker-empty {
+  text-align: center;
+  padding: 32px 20px;
+  color: var(--color-text-secondary);
+}
+
+.vehicle-bottom {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: var(--max-width);
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--color-card);
+  border-top: 1px solid var(--color-border);
+  gap: 16px;
+  z-index: var(--z-header);
+}
+
+.vb-price-area {
+  display: flex;
+  flex-direction: column;
+}
+
+.vb-label {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+}
+
+.vb-price {
+  font-size: var(--font-xxl);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.vb-discount {
+  font-size: var(--font-sm);
+  color: var(--color-success);
+}
+
+.vb-origin-price {
+  font-size: var(--font-xs);
+  color: var(--color-text-secondary);
+  text-decoration: line-through;
+}
+
+.vb-btn { flex: 1; }
+
+.cancel-rules-tip {
+  margin: 16px;
+  padding: 12px 16px;
+  background: #FFF7E6;
+  border-radius: var(--radius-md);
+  font-size: var(--font-sm);
+  color: #D46B08;
+  line-height: 1.5;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.cancel-rules-icon {
+  flex-shrink: 0;
+  font-weight: 700;
+}

@@ -1,0 +1,130 @@
+.payment-center-page {
+  min-height: 100vh;
+  background: var(--color-bg);
+}
+
+.pc-content {
+  padding: 16px;
+}
+
+.pc-content h4 {
+  font-size: var(--font-lg);
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.pc-methods { margin-bottom: 12px; }
+
+.pc-prepaid {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  background: #fff7e6;
+  border: 1px solid #ffe7ba;
+  border-radius: var(--radius-md);
+  color: #d46b08;
+}
+
+.pc-prepaid strong {
+  color: #ad4e00;
+}
+
+.pc-method-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.pc-method-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+}
+
+.pcm-icon { font-size: 24px; }
+
+.pcm-name {
+  flex: 1;
+  font-size: var(--font-md);
+  color: var(--color-text);
+}
+
+.pcm-status {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+}
+
+.pcm-status.bound { color: var(--color-success); }
+
+.pc-deduct-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 10px 12px;
+  background: #FFF7E6;
+  border-radius: var(--radius-md);
+  font-size: var(--font-sm);
+  color: #D46B08;
+  line-height: 1.4;
+}
+
+.pdi-icon { flex-shrink: 0; }
+
+.pc-record-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.pc-record-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.pc-record-item:last-child { border-bottom: none; }
+
+.pcr-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pcr-order {
+  font-size: var(--font-md);
+  color: var(--color-text);
+}
+
+.pcr-time {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+}
+
+.pcr-right {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pcr-amount {
+  font-size: var(--font-lg);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.pcr-method {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+}
+
+.pcr-sub {
+  font-size: 11px;
+  color: #d46b08;
+}

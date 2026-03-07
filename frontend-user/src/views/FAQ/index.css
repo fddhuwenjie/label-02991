@@ -1,0 +1,110 @@
+.faq-page {
+  min-height: 100vh;
+  background: var(--color-bg);
+}
+
+.faq-categories {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+  overflow-x: auto;
+  background: var(--color-card);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.faq-categories::-webkit-scrollbar { display: none; }
+
+.faq-cat-btn {
+  flex-shrink: 0;
+  padding: 6px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-round);
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.faq-cat-btn.active {
+  background: var(--color-primary);
+  color: #fff;
+  border-color: var(--color-primary);
+}
+
+.faq-list {
+  padding: 8px 16px;
+}
+
+.faq-item {
+  background: var(--color-card);
+  border-radius: var(--radius-md);
+  margin-bottom: 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.faq-question {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.faq-question:hover { background: #fafafa; }
+
+.faq-q-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.faq-q-text {
+  flex: 1;
+  font-size: var(--font-md);
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.faq-arrow {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+}
+
+.faq-answer {
+  display: flex;
+  gap: 10px;
+  padding: 0 16px 14px;
+}
+
+.faq-a-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--color-success);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.faq-a-text {
+  font-size: var(--font-md);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  flex: 1;
+}

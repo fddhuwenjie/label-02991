@@ -1,0 +1,222 @@
+.coupon-page {
+  min-height: 100vh;
+  background: var(--color-bg);
+  padding-bottom: calc(var(--tab-height) + 16px);
+}
+
+.coupon-claim-area {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 12px 16px;
+}
+
+.claim-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 16px 8px;
+  background: var(--color-card);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: var(--shadow-sm);
+}
+
+.claim-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.claim-card:active { transform: scale(0.97); }
+
+.claim-card.claim-card-disabled {
+  opacity: 0.6;
+}
+
+.claim-card.claim-card-disabled:hover {
+  transform: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.claim-icon { font-size: 28px; }
+.claim-name { font-size: var(--font-sm); color: var(--color-text); font-weight: 500; }
+.claim-desc { font-size: 10px; color: var(--color-primary); }
+
+.coupon-tabs {
+  display: flex;
+  padding: 0 16px;
+  background: var(--color-card);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.coupon-tab {
+  flex: 1;
+  padding: 12px 0;
+  text-align: center;
+  font-size: var(--font-md);
+  color: var(--color-text-secondary);
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.coupon-tab.active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+  font-weight: 500;
+}
+
+.coupon-list {
+  padding: 8px 16px;
+}
+
+.coupon-card {
+  display: flex;
+  align-items: stretch;
+  background: var(--color-card);
+  border-radius: var(--radius-md);
+  margin-bottom: 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+}
+
+.coupon-card.disabled { opacity: 0.6; }
+
+.cc-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, var(--color-primary), #FF945F);
+  color: #fff;
+  min-width: 100px;
+}
+
+.coupon-card.disabled .cc-left {
+  background: linear-gradient(135deg, #ccc, #ddd);
+}
+
+.cc-amount {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.cc-condition {
+  font-size: 10px;
+  opacity: 0.9;
+  margin-top: 2px;
+}
+
+.cc-divider {
+  width: 0;
+  border-left: 2px dashed var(--color-bg);
+}
+
+.cc-right {
+  flex: 1;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+}
+
+.cc-type {
+  font-size: var(--font-md);
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.cc-expire {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+}
+
+.cc-stamp {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-15deg);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  opacity: 0.3;
+  border: 3px solid;
+  padding: 4px 12px;
+  border-radius: var(--radius-sm);
+}
+
+.invite-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+}
+
+.invite-modal {
+  background: var(--color-card);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  width: 100%;
+  max-width: 320px;
+  text-align: center;
+}
+
+.invite-modal h3 {
+  font-size: var(--font-xl);
+  margin-bottom: 8px;
+}
+
+.invite-modal p {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.invite-code-box {
+  padding: 20px;
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.invite-qr {
+  font-size: 64px;
+  margin-bottom: 12px;
+}
+
+.invite-qr-image {
+  width: 140px;
+  height: 140px;
+  border-radius: 8px;
+  background: #fff;
+  padding: 8px;
+  border: 1px solid var(--color-border);
+  margin-bottom: 12px;
+}
+
+.invite-code {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  word-break: break-all;
+}
+
+.invite-scan-count {
+  margin-top: 8px;
+  font-size: var(--font-xs);
+  color: var(--color-text-secondary);
+}
+
+.invite-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

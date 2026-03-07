@@ -1,0 +1,49 @@
+.device-verify-page {
+  min-height: 100vh;
+  background: var(--color-bg);
+}
+
+.device-verify-content {
+  padding: 24px 16px;
+}
+
+.dv-card {
+  background: var(--color-card);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.dv-card h3 {
+  font-size: var(--font-xl);
+  margin-bottom: 8px;
+}
+
+.dv-card p {
+  color: var(--color-text-secondary);
+  font-size: var(--font-md);
+  line-height: 1.6;
+}
+
+.dv-phone {
+  margin: 10px 0 12px;
+}
+
+.dv-demo-code {
+  background: #fff7e6;
+  border: 1px solid #ffe7ba;
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  margin-bottom: 12px;
+  color: #ad4e00;
+}
+
+.dv-demo-code strong {
+  margin-left: 6px;
+  font-size: var(--font-lg);
+  letter-spacing: 3px;
+}
+
+.dv-card .btn {
+  margin-top: 12px;
+}

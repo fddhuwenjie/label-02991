@@ -1,0 +1,139 @@
+.feedback-page {
+  min-height: 100vh;
+  background: var(--color-bg);
+}
+
+.feedback-content {
+  padding: 16px;
+  padding-bottom: 40px;
+}
+
+.fb-tabs {
+  display: flex;
+  margin-bottom: 16px;
+  background: var(--color-card);
+  border-radius: var(--radius-round);
+  padding: 4px;
+  box-shadow: var(--shadow-sm);
+}
+
+.fb-tab {
+  flex: 1;
+  height: 38px;
+  border-radius: var(--radius-round);
+  font-size: var(--font-md);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.fb-tab.active {
+  background: var(--color-primary);
+  color: #fff;
+  font-weight: 500;
+}
+
+.fb-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fb-type-select {
+  display: flex;
+  gap: 8px;
+}
+
+.fb-type-btn {
+  flex: 1;
+  height: 44px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-md);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.fb-type-btn.active {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+.fb-counter {
+  text-align: right;
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+}
+
+.fb-upload {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-md);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.fb-upload:hover { border-color: var(--color-primary); color: var(--color-primary); }
+
+.fb-upload-icon { font-size: 20px; }
+
+.fb-history {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fb-empty {
+  text-align: center;
+  padding: 40px;
+  color: var(--color-text-secondary);
+}
+
+.fb-item { margin-bottom: 0; }
+
+.fbi-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.fbi-type {
+  font-size: var(--font-md);
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.fbi-content {
+  font-size: var(--font-md);
+  color: var(--color-text);
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.fbi-time {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+}
+
+.fbi-reply {
+  margin-top: 8px;
+  padding: 10px;
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  font-size: var(--font-sm);
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+.fbi-reply-label {
+  color: var(--color-primary);
+  font-weight: 500;
+}
