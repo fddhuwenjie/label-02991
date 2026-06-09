@@ -178,3 +178,25 @@
   gap: 8px;
   margin-top: 16px;
 }
+
+.detail-replay h4 {
+  margin-bottom: 12px;
+}
+
+.replay-map-wrapper {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.replay-map {
+  width: 100%;
+  height: 220px;
+  background: #e8e8e8;
+}
+
+.replay-controls {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  justify-content: center;
+}

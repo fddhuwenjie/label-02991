@@ -1,7 +1,20 @@
 import { create } from 'zustand';
 import type { Order, Address, VehicleType, OrderRating } from '../types';
+import type { LatLng } from '../utils/geo';
+import { interpolateLine, remainingDistance, totalDistance, estimateEta } from '../utils/geo';
 import * as orderApi from '../api/order';
 import { MOCK_VEHICLE_TYPES } from '../api/mock/data';
+
+export interface TripSimulationState {
+  waypoints: LatLng[];
+  currentIndex: number;
+  currentPosition: LatLng | null;
+  remainingDist: number;
+  eta: number;
+  isSimulating: boolean;
+  isCompleted: boolean;
+  avgSpeedMps: number;
+}
 
 interface OrderState {
   currentOrder: Order | null;
@@ -13,6 +26,8 @@ interface OrderState {
   historyAddresses: Address[];
   frequentAddresses: Address[];
   loading: boolean;
+
+  tripSimulation: TripSimulationState;
 
   setOrigin: (addr: Address | null) => void;
   setDestination: (addr: Address | null) => void;
@@ -34,7 +49,23 @@ interface OrderState {
   getOrderById: (id: string) => Order | null;
   setCurrentOrder: (order: Order | null) => void;
   refreshCurrentOrder: (orderId: string) => void;
+
+  initTripSimulation: (origin: LatLng, destination: LatLng, totalDurationSec: number) => void;
+  tickTripSimulation: () => void;
+  completeTripSimulation: () => void;
+  resetTripSimulation: () => void;
 }
+
+const INITIAL_SIM: TripSimulationState = {
+  waypoints: [],
+  currentIndex: 0,
+  currentPosition: null,
+  remainingDist: 0,
+  eta: 0,
+  isSimulating: false,
+  isCompleted: false,
+  avgSpeedMps: 8,
+};
 
 export const useOrderStore = create<OrderState>((set, get) => ({
   currentOrder: null,
@@ -46,6 +77,7 @@ export const useOrderStore = create<OrderState>((set, get) => ({
   historyAddresses: [],
   frequentAddresses: [],
   loading: false,
+  tripSimulation: { ...INITIAL_SIM },
 
   setOrigin(addr) { set({ origin: addr }); },
   setDestination(addr) { set({ destination: addr }); },
@@ -154,5 +186,65 @@ export const useOrderStore = create<OrderState>((set, get) => ({
   refreshCurrentOrder(orderId) {
     const order = orderApi.getOrderById(orderId);
     if (order) set({ currentOrder: order });
+  },
+
+  initTripSimulation(origin, destination, totalDurationSec) {
+    const waypoints = interpolateLine(origin, destination, 20);
+    const dist = totalDistance(waypoints);
+    const avgSpeedMps = totalDurationSec > 0 ? dist / totalDurationSec : 8;
+    const rem = remainingDistance(waypoints, 0);
+    const eta = estimateEta(rem, avgSpeedMps);
+    set({
+      tripSimulation: {
+        waypoints,
+        currentIndex: 0,
+        currentPosition: waypoints[0],
+        remainingDist: rem,
+        eta,
+        isSimulating: true,
+        isCompleted: false,
+        avgSpeedMps,
+      },
+    });
+  },
+
+  tickTripSimulation() {
+    const sim = get().tripSimulation;
+    if (!sim.isSimulating || sim.isCompleted) return;
+    const nextIndex = sim.currentIndex + 1;
+    if (nextIndex >= sim.waypoints.length) {
+      get().completeTripSimulation();
+      return;
+    }
+    const rem = remainingDistance(sim.waypoints, nextIndex);
+    const eta = estimateEta(rem, sim.avgSpeedMps);
+    set({
+      tripSimulation: {
+        ...sim,
+        currentIndex: nextIndex,
+        currentPosition: sim.waypoints[nextIndex],
+        remainingDist: rem,
+        eta,
+      },
+    });
+  },
+
+  completeTripSimulation() {
+    const sim = get().tripSimulation;
+    set({
+      tripSimulation: {
+        ...sim,
+        isSimulating: false,
+        isCompleted: true,
+        remainingDist: 0,
+        eta: 0,
+        currentIndex: sim.waypoints.length - 1,
+        currentPosition: sim.waypoints[sim.waypoints.length - 1],
+      },
+    });
+  },
+
+  resetTripSimulation() {
+    set({ tripSimulation: { ...INITIAL_SIM } });
   },
 }));
