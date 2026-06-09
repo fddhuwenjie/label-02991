@@ -173,6 +173,14 @@ export default function TripInProgressPage() {
         <button className="btn btn-primary btn-block btn-lg" onClick={handleComplete} disabled={loading}>
           {loading ? '处理中...' : '模拟到达目的地'}
         </button>
+
+        <button
+          className="btn btn-outline btn-block btn-lg"
+          style={{ marginTop: 8 }}
+          onClick={() => navigate(`/trip-tracking/${orderId}`)}
+        >
+          实时行程追踪
+        </button>
       </div>
 
       <Modal

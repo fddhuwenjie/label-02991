@@ -1,11 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useOrderStore } from '../../store/orderStore';
+import { useAMap } from '../../hooks/useAMap';
 import { useToast } from '../../components/Toast';
 import { PageHeader } from '../../components/Layout';
 import { StarRating } from '../../components/StarRating';
 import { Loading } from '../../components/Loading';
 import { formatPrice, formatTime, formatDuration, formatDistance } from '../../utils/format';
+import { interpolateLine } from '../../utils/geo';
 import './index.css';
 
 export default function OrderDetailPage() {
@@ -14,10 +16,50 @@ export default function OrderDetailPage() {
   const toast = useToast();
   const { currentOrder, refreshCurrentOrder, setCurrentOrder } = useOrderStore();
 
+  const [showReplay, setShowReplay] = useState(false);
+  const [isReplaying, setIsReplaying] = useState(false);
+
+  const mapContainerId = 'order-detail-map';
+
+  const {
+    ready: mapReady,
+    updateDriverMarker,
+    setTraveledPath,
+    setRemainingPath,
+    setOriginMarker,
+    setDestMarker,
+    fitBounds,
+    replayPath,
+  } = useAMap({
+    containerId: mapContainerId,
+  });
+
   useEffect(() => {
     if (orderId) refreshCurrentOrder(orderId);
     return () => setCurrentOrder(null);
   }, [orderId, refreshCurrentOrder, setCurrentOrder]);
+
+  useEffect(() => {
+    if (!mapReady || !currentOrder) return;
+    const origin = { lat: currentOrder.origin.lat, lng: currentOrder.origin.lng };
+    const dest = { lat: currentOrder.destination.lat, lng: currentOrder.destination.lng };
+    setOriginMarker(origin);
+    setDestMarker(dest);
+    fitBounds([origin, dest]);
+  }, [mapReady, currentOrder, setOriginMarker, setDestMarker, fitBounds]);
+
+  const handleReplay = useCallback(() => {
+    if (!currentOrder) return;
+    const origin = { lat: currentOrder.origin.lat, lng: currentOrder.origin.lng };
+    const dest = { lat: currentOrder.destination.lat, lng: currentOrder.destination.lng };
+    const waypoints = interpolateLine(origin, dest, 20);
+    setIsReplaying(true);
+    replayPath(waypoints, 200);
+    setTimeout(() => {
+      setIsReplaying(false);
+      toast.success('轨迹回放完成');
+    }, waypoints.length * 200 + 500);
+  }, [currentOrder, replayPath, toast]);
 
   if (!currentOrder) {
     return <Loading fullscreen text="加载订单详情..." />;
@@ -26,6 +68,7 @@ export default function OrderDetailPage() {
   const order = currentOrder;
   const duration = order.startedAt && order.completedAt ? (order.completedAt - order.startedAt) / 1000 : 0;
   const canContactDriver = order.driver && order.completedAt && (Date.now() - order.completedAt) < 48 * 3600 * 1000;
+  const canReplay = order.status === 'completed' || order.status === 'pending_payment';
 
   return (
     <div className="detail-page page-with-header">
@@ -41,6 +84,39 @@ export default function OrderDetailPage() {
           <div className="dsc-orderid">订单号：{order.id}</div>
           <div className="dsc-time">下单时间：{formatTime(order.createdAt)}</div>
         </div>
+
+        {canReplay && (
+          <div className="detail-replay card">
+            <h4>行驶轨迹</h4>
+            {showReplay ? (
+              <div className="replay-map-wrapper">
+                <div id={mapContainerId} className="replay-map" />
+                <div className="replay-controls">
+                  <button
+                    className="btn btn-sm btn-primary"
+                    onClick={handleReplay}
+                    disabled={isReplaying}
+                  >
+                    {isReplaying ? '回放中...' : '播放轨迹'}
+                  </button>
+                  <button
+                    className="btn btn-sm btn-ghost"
+                    onClick={() => setShowReplay(false)}
+                  >
+                    收起
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <button
+                className="btn btn-outline btn-block"
+                onClick={() => setShowReplay(true)}
+              >
+                查看行驶轨迹回放
+              </button>
+            )}
+          </div>
+        )}
 
         <div className="detail-route card">
           <h4>行程信息</h4>
