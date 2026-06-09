@@ -12,6 +12,11 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      // 配置高德地图 Web 端 API Key（构建/部署时由环境注入）。
+      // 留空时 useAMap 会降级为本地 SVG fallback 渲染，避免阻塞业务流程。
+      window._amapKey = '';
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

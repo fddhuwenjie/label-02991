@@ -243,6 +243,15 @@ export async function payOrder(orderId: string, method: string): Promise<Order |
   return order;
 }
 
+export function saveTripPath(orderId: string, path: Array<{ lat: number; lng: number }>): Order | null {
+  const orders = getOrders();
+  const order = orders.find((o) => o.id === orderId);
+  if (!order) return null;
+  order.tripPath = path;
+  saveOrders(orders);
+  return order;
+}
+
 export async function rateOrder(orderId: string, rating: OrderRating): Promise<Order | null> {
   await delay(500);
   const orders = getOrders();
