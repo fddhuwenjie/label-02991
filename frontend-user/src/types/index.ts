@@ -110,6 +110,7 @@ export interface Order {
   createdAt: number;
   currentDriverLocation?: { lat: number; lng: number };
   modifiedDestination?: Address;
+  tripPath?: Array<{ lat: number; lng: number }>;
 }
 
 export interface OrderRating {

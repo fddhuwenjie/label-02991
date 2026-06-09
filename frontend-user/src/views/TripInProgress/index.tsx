@@ -14,7 +14,7 @@ export default function TripInProgressPage() {
   const { orderId } = useParams<{ orderId: string }>();
   const navigate = useNavigate();
   const toast = useToast();
-  const { currentOrder, startTrip, completeTrip, modifyDestination, refreshCurrentOrder, loading } = useOrderStore();
+  const { currentOrder, startTrip, modifyDestination, refreshCurrentOrder, loading } = useOrderStore();
 
   const [nowTs, setNowTs] = useState(Date.now());
   const [showModify, setShowModify] = useState(false);
@@ -40,11 +40,8 @@ export default function TripInProgressPage() {
 
   const handleComplete = useCallback(async () => {
     if (!orderId) return;
-    const order = await completeTrip(orderId);
-    if (order) {
-      navigate(`/trip-complete/${orderId}`);
-    }
-  }, [orderId, completeTrip, navigate]);
+    navigate(`/trip-tracking/${orderId}`);
+  }, [orderId, navigate]);
 
   const handleModifyDest = useCallback((addr: Address) => {
     setNegotiationTarget(addr);
@@ -171,7 +168,7 @@ export default function TripInProgressPage() {
         </div>
 
         <button className="btn btn-primary btn-block btn-lg" onClick={handleComplete} disabled={loading}>
-          {loading ? '处理中...' : '模拟到达目的地'}
+          {loading ? '处理中...' : '进入实时行程追踪'}
         </button>
       </div>
 

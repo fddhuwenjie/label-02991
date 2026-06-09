@@ -5,6 +5,7 @@ import { useToast } from '../../components/Toast';
 import { PageHeader } from '../../components/Layout';
 import { StarRating } from '../../components/StarRating';
 import { Loading } from '../../components/Loading';
+import { TripReplay } from './TripReplay';
 import { formatPrice, formatTime, formatDuration, formatDistance } from '../../utils/format';
 import './index.css';
 
@@ -118,6 +119,17 @@ export default function OrderDetailPage() {
                 <span style={{ color: 'var(--color-error)' }}>{formatPrice(order.cancelFee!)}</span>
               </div>
             )}
+          </div>
+        )}
+
+        {order.tripPath && order.tripPath.length >= 2 && (
+          <div className="detail-replay card">
+            <h4>行驶轨迹回放</h4>
+            <TripReplay
+              path={order.tripPath}
+              origin={{ lat: order.origin.lat, lng: order.origin.lng }}
+              destination={{ lat: order.destination.lat, lng: order.destination.lng }}
+            />
           </div>
         )}
 
