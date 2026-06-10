@@ -108,8 +108,9 @@ export interface Order {
   transactionId?: string;
   rating?: OrderRating;
   createdAt: number;
-  currentDriverLocation?: { lat: number; lng: number };
+  currentDriverLocation?: LatLng;
   modifiedDestination?: Address;
+  tripTrajectory?: TripPoint[];
 }
 
 export interface OrderRating {
@@ -168,4 +169,39 @@ export interface FAQ {
   categoryName: string;
   question: string;
   answer: string;
+}
+
+export interface LatLng {
+  lat: number;
+  lng: number;
+}
+
+export interface TripPoint {
+  lat: number;
+  lng: number;
+  timestamp: number;
+}
+
+export interface TripSimulationState {
+  isActive: boolean;
+  isPaused: boolean;
+  isCompleted: boolean;
+  currentIndex: number;
+  totalPoints: number;
+  trajectoryPoints: LatLng[];
+  currentPosition: LatLng | null;
+  traveledPath: LatLng[];
+  remainingPath: LatLng[];
+  remainingDistance: number;
+  etaSeconds: number;
+  elapsedSeconds: number;
+  fullTrajectory: TripPoint[];
+  intervalId: ReturnType<typeof setInterval> | null;
+}
+
+export interface TripPlaybackState {
+  isPlaying: boolean;
+  currentIndex: number;
+  totalPoints: number;
+  playbackSpeed: number;
 }

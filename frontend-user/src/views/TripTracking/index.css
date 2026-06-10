@@ -1,0 +1,244 @@
+.trip-tracking-page {
+  min-height: 100vh;
+  background: #f5f7fa;
+  display: flex;
+  flex-direction: column;
+}
+
+.tt-map-container {
+  height: 45vh;
+  width: 100%;
+  position: relative;
+  background: #e8ecf1;
+}
+
+.tt-info-panel {
+  flex: 1;
+  padding: 16px;
+  padding-bottom: 32px;
+  overflow-y: auto;
+}
+
+.tt-status-header {
+  background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+  border-radius: 12px;
+  padding: 16px 20px;
+  color: white;
+  margin-bottom: 16px;
+}
+
+.tt-status-badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.tt-eta-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tt-eta-text {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.tt-distance {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.tt-progress-section {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.tt-progress-bar {
+  position: relative;
+  height: 8px;
+  background: #e8ecf1;
+  border-radius: 4px;
+  overflow: visible;
+  margin-bottom: 12px;
+}
+
+.tt-progress-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #52c41a 0%, #73d13d 100%);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.tt-progress-marker {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  transition: left 0.5s ease;
+  z-index: 2;
+}
+
+.tt-progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #8c8c8c;
+}
+
+.tt-route-card {
+  background: white;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 16px;
+}
+
+.tt-route-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.tt-route-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.tt-route-dot.origin {
+  background: #1890ff;
+}
+
+.tt-route-dot.dest {
+  background: #ff4d4f;
+}
+
+.tt-route-content {
+  flex: 1;
+}
+
+.tt-route-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: #262626;
+  margin-bottom: 2px;
+}
+
+.tt-route-addr {
+  font-size: 13px;
+  color: #8c8c8c;
+}
+
+.tt-route-line {
+  width: 2px;
+  height: 20px;
+  background: #e8ecf1;
+  margin-left: 5px;
+}
+
+.tt-driver-card {
+  background: white;
+  border-radius: 12px;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.tt-driver-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tt-driver-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fa8c16 0%, #d46b08 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.tt-driver-name {
+  font-size: 16px;
+  font-weight: 500;
+  color: #262626;
+  margin-bottom: 4px;
+}
+
+.tt-driver-car {
+  font-size: 13px;
+  color: #8c8c8c;
+}
+
+.tt-driver-rating {
+  font-size: 15px;
+  color: #fa8c16;
+  font-weight: 500;
+}
+
+.tt-stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.tt-stat-item {
+  background: white;
+  border-radius: 12px;
+  padding: 16px 12px;
+  text-align: center;
+}
+
+.tt-stat-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: #262626;
+  margin-bottom: 4px;
+}
+
+.tt-stat-label {
+  font-size: 12px;
+  color: #8c8c8c;
+}
+
+.tt-complete-btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #52c41a 0%, #389e0d 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tt-complete-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.tt-complete-btn:not(:disabled):active {
+  transform: scale(0.98);
+}

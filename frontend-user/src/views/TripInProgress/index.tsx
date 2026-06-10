@@ -25,11 +25,18 @@ export default function TripInProgressPage() {
   useEffect(() => {
     if (orderId) {
       refreshCurrentOrder(orderId);
-      if (currentOrder?.status === 'accepted') {
-        startTrip(orderId);
-      }
     }
-  }, [orderId, refreshCurrentOrder, startTrip, currentOrder?.status]);
+  }, [orderId, refreshCurrentOrder]);
+
+  useEffect(() => {
+    if (orderId && currentOrder?.status === 'accepted') {
+      startTrip(orderId).then((order) => {
+        if (order) {
+          navigate(`/trip-tracking/${orderId}`);
+        }
+      });
+    }
+  }, [orderId, currentOrder?.status, startTrip, navigate]);
 
   useEffect(() => {
     const timer = setInterval(() => {
