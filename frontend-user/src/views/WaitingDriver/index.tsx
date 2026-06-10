@@ -68,7 +68,7 @@ export default function WaitingDriverPage() {
   }, [orderId, cancelReason, cancelOrder, navigate, toast]);
 
   const handleStartTrip = useCallback(() => {
-    if (orderId) navigate(`/trip/${orderId}`);
+    if (orderId) navigate(`/trip-tracking/${orderId}`);
   }, [orderId, navigate]);
 
   if (!currentOrder) {

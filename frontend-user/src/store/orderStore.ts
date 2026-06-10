@@ -2,6 +2,20 @@ import { create } from 'zustand';
 import type { Order, Address, VehicleType, OrderRating } from '../types';
 import * as orderApi from '../api/order';
 import { MOCK_VEHICLE_TYPES } from '../api/mock/data';
+import { haversineDistance, interpolatePath, calculateETA, type LatLng } from '../utils/geo';
+
+interface TripSimulationState {
+  isRunning: boolean;
+  fullPath: LatLng[];
+  traveledPath: LatLng[];
+  remainingPath: LatLng[];
+  currentPosition: LatLng | null;
+  currentIndex: number;
+  remainingDistance: number;
+  totalDistance: number;
+  estimatedArrival: number;
+  intervalId: ReturnType<typeof setInterval> | null;
+}
 
 interface OrderState {
   currentOrder: Order | null;
@@ -13,6 +27,7 @@ interface OrderState {
   historyAddresses: Address[];
   frequentAddresses: Address[];
   loading: boolean;
+  tripSimulation: TripSimulationState;
 
   setOrigin: (addr: Address | null) => void;
   setDestination: (addr: Address | null) => void;
@@ -30,11 +45,28 @@ interface OrderState {
   startTrip: (orderId: string) => Promise<Order | null>;
   completeTrip: (orderId: string) => Promise<Order | null>;
 
+  startTripSimulation: (origin: Address, destination: Address) => void;
+  stopTripSimulation: () => void;
+  resetTripSimulation: () => void;
+
   loadOrders: (filter?: { status?: string; startDate?: number; endDate?: number }) => void;
   getOrderById: (id: string) => Order | null;
   setCurrentOrder: (order: Order | null) => void;
   refreshCurrentOrder: (orderId: string) => void;
 }
+
+const initialTripSimulation: TripSimulationState = {
+  isRunning: false,
+  fullPath: [],
+  traveledPath: [],
+  remainingPath: [],
+  currentPosition: null,
+  currentIndex: 0,
+  remainingDistance: 0,
+  totalDistance: 0,
+  estimatedArrival: 0,
+  intervalId: null,
+};
 
 export const useOrderStore = create<OrderState>((set, get) => ({
   currentOrder: null,
@@ -46,6 +78,7 @@ export const useOrderStore = create<OrderState>((set, get) => ({
   historyAddresses: [],
   frequentAddresses: [],
   loading: false,
+  tripSimulation: initialTripSimulation,
 
   setOrigin(addr) { set({ origin: addr }); },
   setDestination(addr) { set({ destination: addr }); },
@@ -137,6 +170,99 @@ export const useOrderStore = create<OrderState>((set, get) => ({
     const order = await orderApi.completeTrip(orderId);
     if (order) set({ currentOrder: order });
     return order;
+  },
+
+  startTripSimulation(origin, destination) {
+    const { tripSimulation } = get();
+    if (tripSimulation.intervalId) {
+      clearInterval(tripSimulation.intervalId);
+    }
+
+    const fullPath = interpolatePath(
+      { lat: origin.lat, lng: origin.lng },
+      { lat: destination.lat, lng: destination.lng },
+      20
+    );
+
+    const totalDistance = haversineDistance(fullPath[0], fullPath[fullPath.length - 1]);
+
+    const intervalId = setInterval(() => {
+      const { tripSimulation: ts } = get();
+      const nextIndex = ts.currentIndex + 1;
+
+      if (nextIndex >= fullPath.length) {
+        clearInterval(ts.intervalId!);
+        set({
+          tripSimulation: {
+            ...ts,
+            isRunning: false,
+            currentIndex: fullPath.length - 1,
+            currentPosition: fullPath[fullPath.length - 1],
+            traveledPath: fullPath,
+            remainingPath: [],
+            remainingDistance: 0,
+            estimatedArrival: 0,
+            intervalId: null,
+          },
+        });
+        return;
+      }
+
+      const newPosition = fullPath[nextIndex];
+      const traveledPath = fullPath.slice(0, nextIndex + 1);
+      const remainingPath = fullPath.slice(nextIndex);
+      const remainingDistance = haversineDistance(newPosition, fullPath[fullPath.length - 1]);
+      const estimatedArrival = calculateETA(remainingDistance);
+
+      set({
+        tripSimulation: {
+          ...ts,
+          currentIndex: nextIndex,
+          currentPosition: newPosition,
+          traveledPath,
+          remainingPath,
+          remainingDistance,
+          estimatedArrival,
+        },
+      });
+    }, 2000);
+
+    set({
+      tripSimulation: {
+        isRunning: true,
+        fullPath,
+        traveledPath: [fullPath[0]],
+        remainingPath: fullPath,
+        currentPosition: fullPath[0],
+        currentIndex: 0,
+        remainingDistance: totalDistance,
+        totalDistance,
+        estimatedArrival: calculateETA(totalDistance),
+        intervalId,
+      },
+    });
+  },
+
+  stopTripSimulation() {
+    const { tripSimulation } = get();
+    if (tripSimulation.intervalId) {
+      clearInterval(tripSimulation.intervalId);
+    }
+    set({
+      tripSimulation: {
+        ...get().tripSimulation,
+        isRunning: false,
+        intervalId: null,
+      },
+    });
+  },
+
+  resetTripSimulation() {
+    const { tripSimulation } = get();
+    if (tripSimulation.intervalId) {
+      clearInterval(tripSimulation.intervalId);
+    }
+    set({ tripSimulation: initialTripSimulation });
   },
 
   loadOrders(filter) {
