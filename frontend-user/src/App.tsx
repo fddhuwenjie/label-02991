@@ -13,6 +13,7 @@ import VehicleSelectPage from './views/VehicleSelect';
 import WaitingDriverPage from './views/WaitingDriver';
 import TripInProgressPage from './views/TripInProgress';
 import TripCompletePage from './views/TripComplete';
+import TripTrackingPage from './views/TripTracking';
 import OrderListPage from './views/OrderList';
 import OrderDetailPage from './views/OrderDetail';
 import PaymentCenterPage from './views/PaymentCenter';
@@ -52,6 +53,7 @@ function AppRoutes() {
       <Route path="/vehicle-detail" element={<Navigate to="/vehicle-select" replace />} />
       <Route path="/waiting/:orderId" element={<AuthGuard><WaitingDriverPage /></AuthGuard>} />
       <Route path="/trip/:orderId" element={<AuthGuard><TripInProgressPage /></AuthGuard>} />
+      <Route path="/trip-tracking/:orderId" element={<AuthGuard><TripTrackingPage /></AuthGuard>} />
       <Route path="/trip-complete/:orderId" element={<AuthGuard><TripCompletePage /></AuthGuard>} />
 
       <Route path="/orders" element={<AuthGuard><OrderListPage /></AuthGuard>} />

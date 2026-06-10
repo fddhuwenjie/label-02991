@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useOrderStore } from '../../store/orderStore';
 import { useToast } from '../../components/Toast';
 import { PageHeader } from '../../components/Layout';
 import { StarRating } from '../../components/StarRating';
 import { Loading } from '../../components/Loading';
+import { useAMap } from '../../hooks/useAMap';
 import { formatPrice, formatTime, formatDuration, formatDistance } from '../../utils/format';
 import './index.css';
 
@@ -14,10 +15,46 @@ export default function OrderDetailPage() {
   const toast = useToast();
   const { currentOrder, refreshCurrentOrder, setCurrentOrder } = useOrderStore();
 
+  const mapCenter = useRef<{ lat: number; lng: number } | null>(null);
+  if (currentOrder?.origin) {
+    mapCenter.current = { lat: currentOrder.origin.lat, lng: currentOrder.origin.lng };
+  }
+
+  const { mapRef, mapReady, addMarker, addPolyline, fitView } = useAMap(mapCenter.current || undefined, 13);
+  const markersAdded = useRef(false);
+  const polylineAdded = useRef(false);
+
   useEffect(() => {
     if (orderId) refreshCurrentOrder(orderId);
     return () => setCurrentOrder(null);
   }, [orderId, refreshCurrentOrder, setCurrentOrder]);
+
+  useEffect(() => {
+    if (!mapReady || !currentOrder) return;
+    if (markersAdded.current && polylineAdded.current) return;
+
+    const { origin, destination, traveledPath } = currentOrder;
+
+    if (!markersAdded.current) {
+      addMarker({ lat: origin.lat, lng: origin.lng });
+      addMarker({ lat: destination.lat, lng: destination.lng });
+      markersAdded.current = true;
+    }
+
+    const pathToShow = traveledPath && traveledPath.length > 0
+      ? traveledPath
+      : currentOrder.route?.polyline || [];
+
+    if (!polylineAdded.current && pathToShow.length > 0) {
+      addPolyline(pathToShow, {
+        strokeColor: '#00B42A',
+        strokeWeight: 5,
+        strokeOpacity: 0.8,
+      });
+      polylineAdded.current = true;
+      fitView([50, 50, 50, 50]);
+    }
+  }, [mapReady, currentOrder, addMarker, addPolyline, fitView]);
 
   if (!currentOrder) {
     return <Loading fullscreen text="加载订单详情..." />;
@@ -26,10 +63,20 @@ export default function OrderDetailPage() {
   const order = currentOrder;
   const duration = order.startedAt && order.completedAt ? (order.completedAt - order.startedAt) / 1000 : 0;
   const canContactDriver = order.driver && order.completedAt && (Date.now() - order.completedAt) < 48 * 3600 * 1000;
+  const showTrajectory = (order.status === 'completed' || order.status === 'pending_payment') && 
+    (order.traveledPath?.length || order.route?.polyline?.length);
 
   return (
     <div className="detail-page page-with-header">
       <PageHeader title="订单详情" />
+
+      {showTrajectory && (
+        <div className="detail-trajectory">
+          <div ref={mapRef} className="detail-trajectory-map" />
+          {!mapReady && <Loading text="加载轨迹..." />}
+          <div className="detail-trajectory-title">行驶轨迹</div>
+        </div>
+      )}
 
       <div className="detail-content">
         <div className="detail-status-card card">
