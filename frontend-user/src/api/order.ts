@@ -2,7 +2,7 @@ import { delay } from './mock/delay';
 import { storage } from '../utils/storage';
 import { generateOrderId, generateTransactionId } from '../utils/format';
 import { getRandomDriver, generateMockRoute } from './mock/data';
-import type { Order, Address, VehicleType, OrderRating } from '../types';
+import type { Order, Address, VehicleType, OrderRating, TripPoint } from '../types';
 import { getCurrentUser } from './auth';
 
 function getOrders(): Order[] {
@@ -295,5 +295,17 @@ export function addFrequentAddress(addr: Address): void {
   if (!list.find((a) => a.address === addr.address)) {
     list.push({ ...addr, isFrequent: true });
     storage.set(key, list);
+  }
+}
+
+export function saveTripTrajectory(orderId: string, trajectory: TripPoint[]): void {
+  const orders = getOrders();
+  const order = orders.find((o) => o.id === orderId);
+  if (order) {
+    order.tripTrajectory = trajectory;
+    if (trajectory.length > 0) {
+      order.currentDriverLocation = trajectory[trajectory.length - 1];
+    }
+    saveOrders(orders);
   }
 }
